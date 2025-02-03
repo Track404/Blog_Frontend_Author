@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+
 function Comments({ comments, paramsId }) {
   const [data, setData] = useState({
     content: '',
@@ -14,6 +15,7 @@ function Comments({ comments, paramsId }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [shouldSubmit, setShouldSubmit] = useState(false);
+  const [shouldDelete, setShouldDelete] = useState(false);
   const navigate = useNavigate();
   const url = `http://localhost:3000/comments`;
 
@@ -23,6 +25,14 @@ function Comments({ comments, paramsId }) {
     setMessage('');
     setLoading(true);
     setShouldSubmit(true);
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    setError([]);
+    setMessage('');
+    setLoading(true);
+    setShouldDelete(true);
   };
 
   useEffect(() => {
@@ -103,6 +113,9 @@ function Comments({ comments, paramsId }) {
                 <div className="comment">
                   <h3>Author:{comment.authorId} </h3>
                   <p>content: {comment.content}</p>
+                  <form action="/comments/:id" onSubmit={handleDelete}>
+                    <button type="submit">delete</button>
+                  </form>
                 </div>
               </li>
             );

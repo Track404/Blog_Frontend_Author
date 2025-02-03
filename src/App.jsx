@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Blog from './pages/Blog';
 import SinglePosts from './pages/SinglePosts';
+import CreatePosts from './components/CreateNewPosts';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: '/posts/:id',
     element: <SinglePosts />,
+  },
+  {
+    path: '/posts/create',
+    element: <CreatePosts />,
   },
 ]);
 function App() {

@@ -1,18 +1,32 @@
 import ProtectedRoute from '../components/ProtectedRoute';
-import styles from './Blog.module.css';
+import './Blog.module.css';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import LoadingScreen from '../components/LoadingScreen';
 import { Button } from '@mui/material';
+import { jwtDecode } from 'jwt-decode';
 function Blog() {
   const [error, setError] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState([]);
-
-  const url = `http://localhost:3000/posts`;
+  const [deleteId, setDeleteId] = useState('');
+  const [shouldSubmit, setShouldSubmit] = useState(false);
+  const handleSubmit = (e, msg) => {
+    setDeleteId(msg);
+    e.preventDefault();
+    setError([]);
+    setMessage('');
+    setLoading(true);
+    setShouldSubmit(true);
+  };
 
   useEffect(() => {
-    fetch(url, {
+    const token = localStorage.getItem('token'); // Get token from localStorage
+
+    // Decode the token to get user info from the payload
+    const decodedToken = jwtDecode(token);
+
+    fetch(`http://localhost:3000/user/${decodedToken.id}/posts`, {
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -33,7 +47,37 @@ function Blog() {
       .finally(() => {
         setLoading(false);
       });
-  }, [url]);
+  }, [shouldSubmit]);
+
+  useEffect(() => {
+    if (!shouldSubmit) return;
+
+    setLoading(true);
+    fetch(`http://localhost:3000/posts/${deleteId}`, {
+      mode: 'cors',
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          return response.json().then((err) => {
+            throw new Error(err.message || 'Login failed');
+          });
+        }
+        return response.json();
+      })
+      .then(() => {
+        setDeleteId('');
+      })
+      .catch((error) => {
+        setError([error.message || 'Something went wrong. Please try again.']);
+      })
+      .finally(() => {
+        setLoading(false);
+        setShouldSubmit(false);
+      });
+  }, [shouldSubmit, deleteId]);
+
   if (loading)
     return (
       <>
@@ -44,6 +88,8 @@ function Blog() {
     <>
       <ProtectedRoute>
         <h1>You sucessfully in the Author Section</h1>
+
+        <h2>There are your posts</h2>
         {message && (
           <ul>
             {message.map((msg, index) => (
@@ -53,6 +99,15 @@ function Blog() {
                   <Link key={msg.id} to={`/posts/${msg.id}`}>
                     Show
                   </Link>
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    handleSubmit(e, msg.id);
+                  }}
+                  key={msg.id}
+                  id={toString(msg.id)}
+                >
+                  Delete
                 </Button>
               </li>
             ))}
@@ -65,6 +120,9 @@ function Blog() {
             ))}
           </ul>
         )}
+        <Button>
+          <Link to={`/posts/create`}>Create New Posts </Link>
+        </Button>
       </ProtectedRoute>
     </>
   );

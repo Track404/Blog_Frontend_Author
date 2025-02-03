@@ -53,7 +53,7 @@ function Posts() {
           <>
             <div>
               <h1>{post.title}</h1>
-              <p>{post.content}</p>
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </div>
             <Comments comments={post.Comments} paramsId={id} />
             <Button>
