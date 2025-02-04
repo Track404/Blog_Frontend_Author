@@ -13,7 +13,7 @@ function Posts() {
   const [post, setPost] = useState(null); // Store the fetched post data
   const [error, setError] = useState(null);
 
-  const url = `http://localhost:3000/posts/${id}`;
+  const url = `https://charismatic-learning-production.up.railway.app/posts/${id}`;
 
   useEffect(() => {
     fetch(url, {

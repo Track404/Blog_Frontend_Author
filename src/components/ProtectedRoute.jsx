@@ -18,7 +18,7 @@ const ProtectedPage = ({ children }) => {
     }
 
     // Fetch protected data from the backend
-    fetch('http://localhost:3000/secure', {
+    fetch('https://charismatic-learning-production.up.railway.app/secure', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`, // Attach token in headers

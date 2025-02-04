@@ -40,10 +40,13 @@ function Blog() {
     // Decode the token to get user info from the payload
     const decodedToken = jwtDecode(token);
 
-    fetch(`http://localhost:3000/user/${decodedToken.id}/posts`, {
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-    })
+    fetch(
+      `https://charismatic-learning-production.up.railway.app/user/${decodedToken.id}/posts`,
+      {
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
       .then(async (response) => {
         if (!response.ok) {
           return response.json().then((err) => {
@@ -67,11 +70,14 @@ function Blog() {
     if (!shouldSubmit) return;
 
     setLoading(true);
-    fetch(`http://localhost:3000/posts/${deleteId}`, {
-      mode: 'cors',
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    })
+    fetch(
+      `https://charismatic-learning-production.up.railway.app/posts/${deleteId}`,
+      {
+        mode: 'cors',
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
       .then(async (response) => {
         if (!response.ok) {
           return response.json().then((err) => {
@@ -96,12 +102,15 @@ function Blog() {
     if (!shouldUpdate) return;
 
     setLoading(true);
-    fetch(`http://localhost:3000/posts/${updateId}`, {
-      mode: 'cors',
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatePublished),
-    })
+    fetch(
+      `https://charismatic-learning-production.up.railway.app/posts/${updateId}`,
+      {
+        mode: 'cors',
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatePublished),
+      }
+    )
       .then(async (response) => {
         if (!response.ok) {
           return response.json().then((err) => {
@@ -166,9 +175,6 @@ function Blog() {
                     }}
                   />
                 </form>
-                <Button>
-                  <Link to={`/posts/${msg.id}/update`}>Update</Link>
-                </Button>
               </li>
             ))}
           </ul>

@@ -43,7 +43,7 @@ const CreatePosts = () => {
     };
 
     // Send data to the server
-    fetch('http://localhost:3000/posts', {
+    fetch('https://charismatic-learning-production.up.railway.app/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const CreatePosts = () => {
   return (
     <ProtectedRoute>
       <div>
-        {error}
+        {error && <p>{String(error)}</p>}
         <h2>Submit Your Post</h2>
 
         <form onSubmit={handleSubmit}>

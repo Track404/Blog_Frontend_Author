@@ -13,7 +13,7 @@ function Login() {
   const [message, setMessage] = useState(null);
   const [shouldSubmit, setShouldSubmit] = useState(false);
 
-  const url = `http://localhost:3000/login/author`;
+  const url = `https://charismatic-learning-production.up.railway.app/login/author`;
   const navigate = useNavigate();
   const handleLogin = (e) => {
     e.preventDefault();
