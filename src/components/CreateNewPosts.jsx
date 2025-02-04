@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 const CreatePosts = () => {
   const [editorValue, setEditorValue] = useState(''); // Store the editor's content in state
   const [formData, setFormData] = useState({}); // Store form data, including editor content
@@ -65,94 +66,97 @@ const CreatePosts = () => {
   };
 
   return (
-    <div>
-      <h2>Submit Your Post</h2>
+    <ProtectedRoute>
+      <div>
+        {error}
+        <h2>Submit Your Post</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title || ''}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="title">Title:</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={formData.title || ''}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div>
-          <label htmlFor="editor">Content:</label>
-          <Editor
-            apiKey="qywowhwjqextz11hdjztqf1xujnb754v12295andbs07r48h"
-            value={editorValue}
-            init={{
-              plugins: [
-                // Core editing features
-                'anchor',
-                'autolink',
-                'charmap',
-                'codesample',
-                'emoticons',
-                'image',
-                'link',
-                'lists',
-                'media',
-                'searchreplace',
-                'table',
-                'visualblocks',
-                'wordcount',
-                // Your account includes a free trial of TinyMCE premium features
-                // Try the most popular premium features until Feb 17, 2025:
-                'checklist',
-                'mediaembed',
-                'casechange',
-                'export',
-                'formatpainter',
-                'pageembed',
-                'a11ychecker',
-                'tinymcespellchecker',
-                'permanentpen',
-                'powerpaste',
-                'advtable',
-                'advcode',
-                'editimage',
-                'advtemplate',
-                'ai',
-                'mentions',
-                'tinycomments',
-                'tableofcontents',
-                'footnotes',
-                'mergetags',
-                'autocorrect',
-                'typography',
-                'inlinecss',
-                'markdown',
-                'importword',
-                'exportword',
-                'exportpdf',
-              ],
-              toolbar:
-                'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-              tinycomments_mode: 'embedded',
-              tinycomments_author: 'Author name',
-              mergetags_list: [
-                { value: 'First.Name', title: 'First Name' },
-                { value: 'Email', title: 'Email' },
-              ],
-              ai_request: (request, respondWith) =>
-                respondWith.string(() =>
-                  Promise.reject('See docs to implement AI Assistant')
-                ),
-            }}
-            onEditorChange={handleEditorChange}
-            initialValue="Welcome to TinyMCE!"
-          />
-        </div>
+          <div>
+            <label htmlFor="editor">Content:</label>
+            <Editor
+              apiKey="qywowhwjqextz11hdjztqf1xujnb754v12295andbs07r48h"
+              value={editorValue}
+              init={{
+                plugins: [
+                  // Core editing features
+                  'anchor',
+                  'autolink',
+                  'charmap',
+                  'codesample',
+                  'emoticons',
+                  'image',
+                  'link',
+                  'lists',
+                  'media',
+                  'searchreplace',
+                  'table',
+                  'visualblocks',
+                  'wordcount',
+                  // Your account includes a free trial of TinyMCE premium features
+                  // Try the most popular premium features until Feb 17, 2025:
+                  'checklist',
+                  'mediaembed',
+                  'casechange',
+                  'export',
+                  'formatpainter',
+                  'pageembed',
+                  'a11ychecker',
+                  'tinymcespellchecker',
+                  'permanentpen',
+                  'powerpaste',
+                  'advtable',
+                  'advcode',
+                  'editimage',
+                  'advtemplate',
+                  'ai',
+                  'mentions',
+                  'tinycomments',
+                  'tableofcontents',
+                  'footnotes',
+                  'mergetags',
+                  'autocorrect',
+                  'typography',
+                  'inlinecss',
+                  'markdown',
+                  'importword',
+                  'exportword',
+                  'exportpdf',
+                ],
+                toolbar:
+                  'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'Author name',
+                mergetags_list: [
+                  { value: 'First.Name', title: 'First Name' },
+                  { value: 'Email', title: 'Email' },
+                ],
+                ai_request: (request, respondWith) =>
+                  respondWith.string(() =>
+                    Promise.reject('See docs to implement AI Assistant')
+                  ),
+              }}
+              onEditorChange={handleEditorChange}
+              initialValue="Welcome to TinyMCE!"
+            />
+          </div>
 
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </ProtectedRoute>
   );
 };
 

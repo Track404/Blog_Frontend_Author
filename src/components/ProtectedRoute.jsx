@@ -26,6 +26,7 @@ const ProtectedPage = ({ children }) => {
     })
       .then((response) => {
         if (!response.ok) {
+          navigate('/login');
           throw new Error('Unauthorized');
         }
         return response.json();
